@@ -1,6 +1,6 @@
 # Security Agent Deployment Automation
 
-The terraform script `aws-deploy.tf` deploys a ubuntu-20.04 LTS instance with a security group that has ports 22 and 443 accessabile. It generates a hosts.ini ansible inventory file populated with the instance's ipv4 addresses deployed via terraform. The script creates a DNS A record of `security-agent.agentstat.net`mapping to the hosts ipv4 address.   
+The terraform script `aws-deploy.tf` deploys a ubuntu-20.04 LTS instance with a security group that has ports 22 and 443 accessabile. It generates a hosts.ini ansible inventory file populated with the instance's ipv4 addresses deployed via terraform. The script creates a DNS A record of `security-agent.agentstat.net`mapping to the hosts ipv4 address.
 
 Before running this command you first need to setup `aws configure` and install terraform
 

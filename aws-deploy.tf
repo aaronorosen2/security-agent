@@ -84,13 +84,13 @@ resource "aws_instance" "csg_security_agent" {
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   key_name               = aws_key_pair.ssh_key.key_name
-  count                  = 1
+  count                  = var.instance_count
   tags = {
     Name = "csg_security_agent"
   }
 }
 
-resource "local_file" "hosts_cfg" {
+resource "local_file" "hosts_ini" {
   content = templatefile("${path.module}/templates/hosts.tpl",
     {
       agents = aws_instance.csg_security_agent.*.public_dns
@@ -99,14 +99,27 @@ resource "local_file" "hosts_cfg" {
   filename = "hosts.ini"
 }
 
+resource "local_file" "dns_hosts_ini" {
+  content = templatefile("${path.module}/templates/hosts.tpl",
+    {
+      agents = [
+        for i in range(0, length(aws_instance.csg_security_agent)) :
+        "${var.record_name}-${i + 1}.${var.domain_name}"
+      ]
+    }
+  )
+  filename = "dns-hosts.ini"
+}
+
 data "aws_route53_zone" "hosted_zone" {
   name = var.domain_name
 }
 
 resource "aws_route53_record" "site_domain" {
+  count   = length(aws_instance.csg_security_agent)
   zone_id = data.aws_route53_zone.hosted_zone.zone_id
-  name    = var.record_name
+  name    = "${var.record_name}-${count.index + 1}"
   type    = "A"
   ttl     = "300"
-  records = [aws_instance.csg_security_agent[0].public_ip]
+  records = [aws_instance.csg_security_agent[count.index].public_ip]
 }

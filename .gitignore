@@ -1,5 +1,6 @@
 *.info
 *sw?
+dns-hosts.ini
 hosts.ini
 *.terraform/
 *.hcl

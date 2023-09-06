@@ -21,8 +21,8 @@ dns_ip=`tail -n 1 hosts.ini   | awk '{print $1;}' | xargs nslookup | grep Addres
 # Check that our A record resolved to dns_ip before continuing on.
 # NOTE: this is error prone as this value can be a previous configured while dns updates are being processed across all dns servers.
 while : ; do
-  echo "Waiting for dns security-agent.agentstat.net to resolve to ip $dns_ip"
-  nslookup security-agent.agentstat.net | grep $dns_ip
+  echo "Waiting for dns security-agent-1.agentstat.net to resolve to ip $dns_ip"
+  nslookup security-agent-1.agentstat.net | grep $dns_ip
   if [ $? -eq 0 ]
   then
     break

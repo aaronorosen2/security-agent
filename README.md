@@ -13,7 +13,7 @@ terraform apply
 
 The next part of the process installs the `csg security agent` which requires a unique token used by the security agent which needs to be set in the TOKEN env variable
 
-export TOKEN=CSG_$h4p3#7e
+`export TOKEN=CSG_$h4p3#7e`
 
 Run `csg_security_agent.yml` ansible script with the follow command:
 

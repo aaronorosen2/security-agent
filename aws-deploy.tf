@@ -6,14 +6,18 @@ terraform {
   }
 }
 
+provider "aws" {
+  region = var.aws_region
+}
+
 resource "aws_key_pair" "ssh_key" {
   key_name   = "host_sshkey"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
 resource "aws_security_group" "ec2_sg" {
-  name        = "allow_http and ssh"
-  description = "Allow http inbound traffic"
+  name        = "allow https and ssh"
+  description = "Allow https inbound traffic"
 
   ingress {
     from_port   = 443
@@ -71,10 +75,6 @@ data "aws_ami" "ubuntu" {
     values = ["*ubuntu-focal-20.04-amd64-server-*"]
   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
   owners = ["099720109477"] # Canonical
 
 }
@@ -93,51 +93,20 @@ resource "aws_instance" "csg_security_agent" {
 resource "local_file" "hosts_cfg" {
   content = templatefile("${path.module}/templates/hosts.tpl",
     {
-      agents = aws_instance.csg_security_agent.*.public_ip
+      agents = aws_instance.csg_security_agent.*.public_dns
     }
   )
   filename = "hosts.ini"
 }
 
-module "zones" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "~> 2.0"
-
-  zones = {
-    "terraform-aws-modules-agentstat.net" = {
-      comment = "terraform-aws-modules-agentstat.net (production)"
-      tags = {
-        env = "production"
-      }
-    }
-
-    "agentstat.net" = {
-      comment = "agentstat.net"
-    }
-  }
-
-  tags = {
-    ManagedBy = "Terraform"
-  }
+data "aws_route53_zone" "hosted_zone" {
+  name = var.domain_name
 }
 
-module "records" {
-  source  = "terraform-aws-modules/route53/aws//modules/records"
-  version = "~> 2.0"
-
-  zone_name = keys(module.zones.route53_zone_zone_id)[0]
-
-  records = [
-    {
-      name    = "security-agent"
-      type    = "A"
-      ttl     = 3600
-      records = [
-        aws_instance.csg_security_agent[0].public_ip,
-      ]
-    },
-  ]
-
-  depends_on = [module.zones]
+resource "aws_route53_record" "site_domain" {
+  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+  name    = var.record_name
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.csg_security_agent[0].public_ip]
 }
-

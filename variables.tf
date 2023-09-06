@@ -1,16 +1,22 @@
-variable "network_interface_id" {
+variable "aws_region" {
   type    = string
-  default = "network_id_from_aws"
-}
-
-variable "ami" {
-  type    = string
-  default = "ami-04d1dcfb793f6fa37"
+  default = "us-west-2"
 }
 
 variable "instance_type" {
   type    = string
   default = "t2.micro"
 }
+
+variable "domain_name" {
+  type    = string
+  default = "agentstat.net"
+}
+
+variable "record_name" {
+  type    = string
+  default = "security-agent"
+}
+
 
 

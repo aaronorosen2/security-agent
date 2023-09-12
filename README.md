@@ -24,3 +24,6 @@ This configures /opt/csg_security_agent on the instance with the installer, conf
 To run all of these commands without interactive terminal prompts see `install.sh`
 
 NOTE: install.sh uses the dns_hosts.ini inventory file where the install.sh script makes perodic calls using `nslookup` to confirm dns has been populated with correct records which can take on the order of 15 minutes to update and also does not guarantee the agent to be installed on the correct host as DNS can return previous DNS records previously configured on the domain name entry so it is best to use the host.ini file directly like is shown in the given ansible-playbook command above.
+
+# demo video
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/O6_Tqygv_c0/0.jpg)](https://www.youtube.com/watch?v=O6_Tqygv_c0)

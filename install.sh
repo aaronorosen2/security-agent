@@ -15,7 +15,7 @@ terraform apply -auto-approve
 
 
 # take the dns record from aws and look up ip_address
-dns_ip=`tail -n 1 hosts.ini   | awk '{print $1;}' | xargs nslookup | grep Address | tail -n1 | awk '{print $2;}'`
+dns_ip=`head -n 2 hosts.ini | tail -n 1 hosts.ini   | awk '{print $1;}' | xargs nslookup | grep Address | tail -n1 | awk '{print $2;}'`
 
 
 # Check that our A record resolved to dns_ip before continuing on.

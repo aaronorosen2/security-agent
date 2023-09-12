@@ -1,3 +1,8 @@
+variable "ssh_key" {
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
+  description = "ssh public key to use"
+}
 variable "instance_count" {
   type        = number
   default     = 1

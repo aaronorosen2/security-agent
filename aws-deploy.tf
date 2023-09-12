@@ -12,7 +12,7 @@ provider "aws" {
 
 resource "aws_key_pair" "ssh_key" {
   key_name   = "host_sshkey"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file(var.ssh_key)
 }
 
 resource "aws_security_group" "ec2_sg" {

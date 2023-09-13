@@ -73,3 +73,7 @@ You can check the csg_security_agent configuration file field unique_token is co
 `sudo cat csg_security_agent/security_agent_config.conf`
 
 If this is the case the csa security agent should be configured and installed correctly. 
+
+
+# demo video
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/O6_Tqygv_c0/0.jpg)](https://www.youtube.com/watch?v=O6_Tqygv_c0)

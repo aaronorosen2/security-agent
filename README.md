@@ -6,9 +6,11 @@ In order to perform the deployment one must install terraform and ansible. Follo
 
 This guide has been tested using: `Terraform v1.5.7` and `ansible [core 2.14.2]` on Ubuntu 23.04.
 
+If you are using ubuntu this should be achievable with: `sudo apt-get install ansible terraform`
+
 ## Terraform Configuration
 
-The terraform logic is located at the top level of this project and creates resources such as instances, ssh-key, security-group, hostzone and A records that are required to deply the security agent. In order to run the terraform script you must export your aws credential.
+The terraform logic is located in the `terraform` directory of this project and creates resources such as instances, ssh-key, security-group, hostzone and A records that are required to deply the security agent. In order to run the terraform script you must export your aws credential.
 
 ```
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
@@ -28,7 +30,7 @@ Now, take time to review the `variables.tf` file, here is where you will update 
 
 ## Running Terraform
 
-The terraform script `aws-deploy.tf` deploys ubuntu-20.04 LTS instances with a security group that has ports 22 and 443 accessible. It generates a hosts.ini and dns-host.ini ansible inventory file in the ansbile folder populated with the instance's aws dns and dns addresses deployed via terraform. The script creates a DNS A record of `record_name`-#.`domain_name` for each instance it deploys where # is the instance number for example 1,2,3 etc..by default there will be one A record named `security-agent-1.agentstat.net`.
+The terraform script `instance.tf` deploys ubuntu-20.04 LTS instances with a security group that has ports 22 and 443 accessible see `security-group.tf`. The terraform generates a hosts.ini and dns-host.ini ansible inventory file in the top level ansbile folder populated with the instance's aws dns and dns addresses deployed via terraform . The script creates a DNS A record of `record_name`-#.`domain_name` for each instance it deploys where # is the instance number for example 1,2,3 etc..by default there will be one A record named `security-agent-1.agentstat.net` see `dns.tf`.
 
 Run the following commands to deploy the terraform script:
 ```

@@ -11,20 +11,20 @@ This guide has been tested using: `Terraform v1.5.7` and `ansible [core 2.14.2]`
 The terraform logic is located at the top level of this project and creates resources such as instances, ssh-key, security-group, hostzone and A records that are required to deply the security agent. In order to run the terraform script you must export your aws credential.
 
 ```
-$ export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-$ export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
 Now, take time to review the `variables.tf` file, here is where you will update parameters that you might need to change for your setup requirements. The parameters you can change are:
 
-`aws_region` aws region to use, default is `us-west-2`.
-`ssh_key` path to public ssh-key, default is `~/.ssh/id_rsa.pub`.
-`instance_count` number of security agent instances to deploy, default is `1`.
-`instance_type` type of instances to deploy, default is `t2.micro`
-`domain_name` the domain name used to create route53 records for the security agents, default is `agentstat.net`.
-`record_name` the record name to use for A records, default is `security-agent`.
+`aws_region` aws region to use, default is `us-west-2`.<br>
+`ssh_key` path to public ssh-key, default is `~/.ssh/id_rsa.pub`.<br>
+`instance_count` number of security agent instances to deploy, default is `1`.<br>
+`instance_type` type of instances to deploy, default is `t2.micro`<br>
+`domain_name` the domain name used to create route53 records for the security agents, default is `agentstat.net`.<br>
+`record_name` the record name to use for A records, default is `security-agent`.<br>
 
-NOTE: if you do not have this domain_name  or a domain_name to use in your aws account this script will still execute successfully though the DNS A records created will not resolve correctly, you will need to use a different ansible inventory file explained later.
+<b>NOTE:</b> if you do not have this domain_name  or a domain_name to use in your aws account this script will still execute successfully though the DNS A records created will not resolve correctly, you will need to use a different ansible inventory file explained later.
 
 ## Running Terraform
 
@@ -39,7 +39,7 @@ terraform apply
 
 At this point you should have all the resources deployed in your aws account.
 
-<b>Important!!!</b> We need to check the nameservers in the agentstat.net hostzone that was created and ensure that they match the nameservers configured on the domain name and manually update these if they are not matching. To do this navigate to route53 and click `Registered domains` on the left sidebar and click on `agentstat.net`. Now, note down the name servers defined on the domain that are displayed. Click on `Hosted zones` and select agentstat.net or whatever domain name you are using and find the NS record enties. Make sure these entires match the ones configured on the domain that you noted.
+<b>Important!!!</b> We need to check the nameservers in the domain_name hostzone match the nameservers configured on the domain name and manually update these if they are not matching. To do this navigate to route53 and click `Registered domains` on the left sidebar and click on `agentstat.net` (domain_name). Now, note down the name servers defined on the domain that is displayed. Click on `Hosted zones` and select agentstat.net or whatever domain name you are using and find the NS record enties. Make sure these entires match the ones configured on the domain that you noted.
 
 Unfortinately these values are outside of what terraform can configure and need to be handled manually at this time, see for more information: https://www.reddit.com/r/Terraform/comments/q8xych/noob_question_matching_nameservers_on_route53/, https://stackoverflow.com/questions/44609348/how-can-i-specify-the-dns-servers-when-terrafrorm-uses-aws-route53-zone.
 
@@ -54,11 +54,11 @@ The csa security agent requires a token that is used by the security agent. To r
 
 `ansible-playbook -i dns_hosts.ini main_playbook.yml -e "TOKEN=<PUT TOKEN VALUE HERE>"`
 
-If you are working with a setup that does not have a domain_name use the hosts.ini file instead like:
+If you are working with a setup that does not have a domain_name in the aws account use the hosts.ini file instead like:
 
 `ansible-playbook -i hosts.ini main_playbook.yml -e "TOKEN=<PUT TOKEN VALUE HERE>"`
 
-The ansible script configures /opt/csg_security_agent on the instance with it's own csa user and group containing the installer, configuration file, token and outputs the output of the installer script.
+The ansible script configures `/opt/csg_security_agent` on the instance with it's own csa user and group containing the installer, configuration file, token and outputs the output of the installer script.
 
 It's a good idea to inspect the hosts to ensure everything configured correctly. In `/opt/` you should see:
 `$ ls -lrt /opt

@@ -76,4 +76,4 @@ If this is the case the csa security agent should be configured and installed co
 
 
 # demo video
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/O6_Tqygv_c0/0.jpg)](https://www.youtube.com/watch?v=O6_Tqygv_c0)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/eQXk7HpW3j8/0.jpg)](https://www.youtube.com/watch?v=eQXk7HpW3j8)

@@ -75,5 +75,5 @@ You can check the csg_security_agent configuration file field unique_token is co
 If this is the case the csa security agent should be configured and installed correctly. 
 
 
-# demo video
+# Demo Video
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/eQXk7HpW3j8/0.jpg)](https://www.youtube.com/watch?v=eQXk7HpW3j8)

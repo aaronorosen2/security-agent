@@ -44,7 +44,7 @@ resource "local_file" "hosts_ini" {
       agents = aws_instance.csg_security_agent.*.public_dns
     }
   )
-  filename = "ansible/hosts.ini"
+  filename = "../ansible/hosts.ini"
 }
 
 resource "local_file" "dns_hosts_ini" {
@@ -56,5 +56,5 @@ resource "local_file" "dns_hosts_ini" {
       ]
     }
   )
-  filename = "ansible/dns-hosts.ini"
+  filename = "../ansible/dns-hosts.ini"
 }

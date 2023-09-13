@@ -1,4 +1,4 @@
-# Security Agent Deployment Automation
+# Security Agent Deployment
 
 ## Setup
 

@@ -1,7 +1,7 @@
 *.info
 *sw?
-dns-hosts.ini
-hosts.ini
+ansible/dns-hosts.ini
+ansible/hosts.ini
 *.terraform/
 *.hcl
 *.tfstate

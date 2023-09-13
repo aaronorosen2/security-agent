@@ -10,7 +10,7 @@ If you are using ubuntu this should be achievable with: `sudo apt-get install an
 
 ## Terraform Configuration
 
-The terraform logic is located in the `terraform` directory of this project and creates resources such as instances, ssh-key, security-group, hostzone and A records that are required to deply the security agent. In order to run the terraform script you must export your aws credential.
+The terraform logic is located in the `terraform` directory of this project and creates resources such as instances, ssh-key, security-group, hostzone and A records that are required to deploy the security agent. In order to run the terraform script you must export your aws credential.
 
 ```
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
@@ -32,6 +32,8 @@ Now, take time to review the `variables.tf` file, here is where you will update 
 
 The terraform script `instance.tf` deploys ubuntu-20.04 LTS instances with a security group that has ports 22 and 443 accessible see `security-group.tf`. The terraform generates a hosts.ini and dns-host.ini ansible inventory file in the top level ansbile folder populated with the instance's aws dns and dns addresses deployed via terraform . The script creates a DNS A record of `record_name`-#.`domain_name` for each instance it deploys where # is the instance number for example 1,2,3 etc..by default there will be one A record named `security-agent-1.agentstat.net` see `dns.tf`.
 
+First cd to the terrafom folder: `cd terraform`
+
 Run the following commands to deploy the terraform script:
 ```
 terraform init
@@ -43,12 +45,12 @@ At this point you should have all the resources deployed in your aws account.
 
 <b>Important!!!</b> We need to check the nameservers in the domain_name hostzone match the nameservers configured on the domain name and manually update these if they are not matching. To do this navigate to route53 and click `Registered domains` on the left sidebar and click on `agentstat.net` (domain_name). Now, note down the name servers defined on the domain that is displayed. Click on `Hosted zones` and select agentstat.net or whatever domain name you are using and find the NS record enties. Make sure these entires match the ones configured on the domain that you noted.
 
-Unfortinately these values are outside of what terraform can configure and need to be handled manually at this time, see for more information: https://www.reddit.com/r/Terraform/comments/q8xych/noob_question_matching_nameservers_on_route53/, https://stackoverflow.com/questions/44609348/how-can-i-specify-the-dns-servers-when-terrafrorm-uses-aws-route53-zone.
+Unfortunately these values are outside of what terraform can configure and needs to be handled manually at this time, see for more information: https://www.reddit.com/r/Terraform/comments/q8xych/noob_question_matching_nameservers_on_route53/, https://stackoverflow.com/questions/44609348/how-can-i-specify-the-dns-servers-when-terrafrorm-uses-aws-route53-zone.
 
 
 ## Ansible
 
-The next part of the process installs the `csg security agent` This logic is located in the ansible folder cd to this folder now.
+The next part of the process installs the `csg security agent` This logic is located in the top level ansible folder, cd to this folder now.
 
 `cd ansible`
 

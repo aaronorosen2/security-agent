@@ -1,0 +1,43 @@
+ - name: create csa group
+   group:
+     name: csa
+
+ - name: create csa user
+   user:
+     name: csa
+     group: csa
+
+ - name: Create the /opt/csg_security_agent directory
+   file:
+     path: /opt/csg_security_agent
+     state: directory
+     owner: csa
+     group: csa
+     mode: 0770
+
+ - name: copy installer script
+   copy:
+     src: ./security_agent_installer_linux_amd64_v1.0.0.sh
+     dest: /opt/csg_security_agent/security_agent_installer.sh
+     owner: csa
+     group: csa
+     mode: 0770
+
+ - name: copy installer config
+   copy:
+     src: ./security_agent_config.conf
+     dest: /opt/csg_security_agent/security_agent_config.conf
+     owner: csa
+     group: csa
+     mode: 0770
+
+ - name: Update token in security_agent_config.conf
+   replace:
+     path: /opt/csg_security_agent/security_agent_config.conf
+     regexp: <add_unique_token_here>
+     replace: "{{ TOKEN }}"
+
+ - name: run security agent installer
+   register: out
+   command: "/opt/csg_security_agent/security_agent_installer.sh --config /opt/csg_security_agent/security_agent_config.conf --token {{ TOKEN }}"
+ - debug: msg="{{ out.stdout_lines }}"

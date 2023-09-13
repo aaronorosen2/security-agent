@@ -3,10 +3,15 @@
   become: true
   become_user: root
   tasks:
+  - name: Create csa user
+    name: csa
+
+
   - name: Create the /opt/csg_security_agent directory
     file:
       path: /opt/csg_security_agent
       state: directory
+      owner: csa
 
   - name: copy installer script
     copy:

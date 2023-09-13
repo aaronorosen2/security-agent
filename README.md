@@ -60,10 +60,12 @@ If you are working with a setup that does not have a domain_name in the aws acco
 
 The ansible script configures `/opt/csg_security_agent` on the instance with it's own csa user and group containing the installer, configuration file, token and outputs the output of the installer script.
 
-It's a good idea to inspect the hosts to ensure everything configured correctly. In `/opt/` you should see:
-`$ ls -lrt /opt
-total 4
-drwxrwx--- 2 csa csa 4096 Sep 13 20:52 csg_security_agent`
+It's a good idea to inspect the hosts to ensure everything configured correctly. Ssh to each host in the host.ini file with `ssh ubuntu@<ip-address>` and inspect with `ls -lrt /opt/` you should see:<br>
+`ls -lrt /opt`<br>
+`total 4`<br>
+`drwxrwx--- 2 csa csa 4096 Sep 13 20:52 csg_security_agent`<br>
 
-and checking via the csg_security_agent configuration file field unique_token is configured with the `TOKEN` specified:
+You can check the csg_security_agent configuration file field unique_token is configured with the `TOKEN` specified: <br>
 `sudo cat csg_security_agent/security_agent_config.conf`
+
+If this is the case the csa security agent should be configured and installed correctly. 
